@@ -1,0 +1,7 @@
+<resources>
+    <string name="application_name">KnightChessboardApp</string>
+    <string name="Dimen_picker_Text">Please choose the Chessboard dimension...</string>
+    <string name="Max_move_picker_Text">...and the max moves for your Knight!</string>
+    <string name="Set_Btn_Txt">SET</string>
+
+</resources>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+        <variable
+            name="selectListener"
+            type="com.magdaproject.knightchessboardapp.listeners.SelectListener" />
+    </data>
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="50dp"
+    android:layout_height="50dp"
+    android:onClick="@{()->selectListener.onSquareItemClick()">
+
+    <LinearLayout
+        android:id="@+id/square"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:background="@color/colorLightGold"
+        android:orientation="horizontal">
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/knight_piece"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:scaleType="fitCenter"
+        android:src="@drawable/icon_knight_svgrepo_com"
+        android:padding="5dp">
+    </ImageView>
+
+</FrameLayout>
+</layout>
