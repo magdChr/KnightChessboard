@@ -28,7 +28,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 
 public class ChessFragment extends Fragment {
 
-    public  static final String TAG = ChessFragment.class.getName();
+    public static final String TAG = ChessFragment.class.getName();
 
     private FragmentChessBinding mFragmentChessBinding;
 
@@ -41,15 +41,14 @@ public class ChessFragment extends Fragment {
     public static final int LightChessColor = R.color.colorGold;
 
 
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        mFragmentChessBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_chess,container,false);
+        mFragmentChessBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_chess, container, false);
         View chessRootView = mFragmentChessBinding.getRoot();
         mChessSquareAdapter = new ChessSquareAdapter(mSelectListener, getActivity());
         mFragmentChessBinding.chessBoard.setAdapter(mChessSquareAdapter);
-        return  chessRootView;
+        return chessRootView;
     }
 
     @Override
@@ -60,12 +59,12 @@ public class ChessFragment extends Fragment {
         mSharedViewmodel.setSquareClicked(false);
         mFragmentChessBinding.setClickListener(SetBtn_Click);
         mFragmentChessBinding.setPathsClickListener(PathBtn_Click);
-       // mFragmentChessBinding.setResetClickListener(ResetBtn_Click);
+        // mFragmentChessBinding.setResetClickListener(ResetBtn_Click);
         mSharedViewmodel.getBoardDimension().observe(this, new Observer<Integer>() {
             @Override
             public void onChanged(Integer dim) {
-                mFragmentChessBinding.chessBoard.setLayoutManager(new GridLayoutManager(getActivity(),dim));
-                mChessSquareAdapter.setAdapterList(GlobalUtils.createColorList(dim),dim);
+                mFragmentChessBinding.chessBoard.setLayoutManager(new GridLayoutManager(getActivity(), dim));
+                mChessSquareAdapter.setAdapterList(GlobalUtils.createColorList(dim), dim);
             }
         });
 
@@ -80,11 +79,10 @@ public class ChessFragment extends Fragment {
     private SelectListener mSelectListener = new SelectListener() {
         @Override
         public void onSquareSelect(Point point) {
-            if(!mSharedViewmodel.getSquareClicked().getValue()) {
+            if (!mSharedViewmodel.getSquareClicked().getValue()) {
                 mSharedViewmodel.setStartingPoint(point);
                 mSharedViewmodel.setSquareClicked(true);
-            }
-            else {
+            } else {
                 mSharedViewmodel.setEndingPoint(point);
                 mFragmentChessBinding.setBtn.setVisibility(View.VISIBLE);
             }
@@ -99,7 +97,7 @@ public class ChessFragment extends Fragment {
             mSharedViewmodel.getTotalPaths().observe(ChessFragment.this, new Observer<HashSet<ArrayList<com.magdaproject.knightchessboardapp.model.Point>>>() {
                 @Override
                 public void onChanged(HashSet<ArrayList<com.magdaproject.knightchessboardapp.model.Point>> arrayLists) {
-                    mFragmentChessBinding.totalPathsTxt.setText("There were found "+String.valueOf(arrayLists.size())+ " paths. SHOW");
+                    mFragmentChessBinding.totalPathsTxt.setText("There were found " + String.valueOf(arrayLists.size()) + " paths. SHOW");
 
                 }
             });
@@ -109,12 +107,12 @@ public class ChessFragment extends Fragment {
     public PathsClickListener PathBtn_Click = new PathsClickListener() {
         @Override
         public void onPathsClick() {
-         mSharedViewmodel.setShowPathFragment(ShowPathDialog.newInstance("KNIGHT PATHS"));
+//         ShowPathDialog mShowPathDialog = ShowPathDialog.newInstance(mSharedViewmodel.getTotalPaths().getValue());
+//         //mShowPathDialog
+//         mSharedViewmodel.setShowPathFragment(mShowPathDialog);
+//        }
         }
+
+
     };
-
-
-
-
-
 }
