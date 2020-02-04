@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
@@ -35,9 +36,17 @@ public class SharedViewmodel extends AndroidViewModel {
 
     private MutableLiveData<Boolean> squareClicked = new MutableLiveData<>();
 
+    private MutableLiveData<DialogFragment> showPathFragment = new MutableLiveData<>();
+
+    public void setTotalPaths(MutableLiveData<HashSet<ArrayList<Point>>> totalPaths) {
+        this.totalPaths = totalPaths;
+    }
+
     MutableLiveData<HashSet<ArrayList<Point>>> totalPaths = new MutableLiveData<>();
 
     MutableLiveData<Fragment> fragmentToAdd = new MutableLiveData<>();
+
+    MutableLiveData<Fragment> fragmentToremove = new MutableLiveData<>();
 
     Context context;
 
@@ -65,6 +74,10 @@ public class SharedViewmodel extends AndroidViewModel {
 
     public void setGlobalToolbarVisibility(boolean action) {
         this.globalToolbarVisibility.setValue(action);
+    }
+
+    public void resetTotalPaths() {
+        this.totalPaths.getValue().clear();
     }
 
     public MutableLiveData<Integer> getBoardDimension() {
@@ -107,12 +120,28 @@ public class SharedViewmodel extends AndroidViewModel {
         this.fragmentToAdd.setValue(fragmentToAdd);
     }
 
+    public MutableLiveData<Fragment> getFragmentToremove() {
+        return fragmentToremove;
+    }
+
+    public void setFragmentToremove(Fragment fragmentToremove) {
+        this.fragmentToremove.setValue(fragmentToremove);
+    }
+
     public MutableLiveData<Boolean> getSquareClicked() {
         return squareClicked;
     }
 
     public void setSquareClicked(boolean squareClicked) {
         this.squareClicked.setValue(squareClicked);
+    }
+
+    public MutableLiveData<DialogFragment> getShowPathFragment() {
+        return showPathFragment;
+    }
+
+    public void setShowPathFragment(DialogFragment showPathFragment) {
+        this.showPathFragment.setValue(showPathFragment);
     }
 
     public class PathResultReceiver extends ResultReceiver {

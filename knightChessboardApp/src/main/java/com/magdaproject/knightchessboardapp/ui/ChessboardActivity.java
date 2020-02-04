@@ -3,7 +3,9 @@ package com.magdaproject.knightchessboardapp.ui;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -28,6 +30,7 @@ public class ChessboardActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         mActivityMainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         GlobalUtils.setstatusBarColor(this,R.color.colorBlack);
+        final FragmentManager fm = getSupportFragmentManager();
         setSupportActionBar(((Toolbar) mActivityMainBinding.toolbar));
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         mSharedViewmodel = ViewModelProviders.of(this).get(SharedViewmodel.class);
@@ -45,7 +48,29 @@ public class ChessboardActivity extends AppCompatActivity {
             public void onChanged(Fragment fragment) {
                 FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
                 //ChessFragment chessFragment = new ChessFragment();
-                fragmentTransaction.replace(R.id.fragment_container, fragment, fragment.getClass().getName()).addToBackStack(null).commit();
+                if(fragment instanceof ChessFragment)
+                    if(fm.findFragmentByTag(ChessFragment.TAG) == null)
+                 fragmentTransaction.add(R.id.fragment_container, fragment, fragment.getClass().getName()).addToBackStack(null).commit();
+                    else {
+                        fragmentTransaction.remove(fm.findFragmentByTag(ChessFragment.TAG)).commit();
+                        fm.beginTransaction().add(R.id.fragment_container, fragment, fragment.getClass().getName()).addToBackStack(null).commit();
+                    }
+            }
+        });
+
+        mSharedViewmodel.getFragmentToremove().observe(this, new Observer<Fragment>() {
+            @Override
+            public void onChanged(Fragment fragment) {
+                FragmentTransaction fragmentTransaction = fm.beginTransaction();
+                fragmentTransaction.remove(fragment).commit();
+            }
+        });
+
+        mSharedViewmodel.getShowPathFragment().observe(this, new Observer<DialogFragment>() {
+            @Override
+            public void onChanged(DialogFragment dialogFragment) {
+                FragmentManager fm = getSupportFragmentManager();
+                dialogFragment.show(fm, "fragment_show_paths");
             }
         });
 
@@ -56,5 +81,10 @@ public class ChessboardActivity extends AppCompatActivity {
             fragmentTransaction.add(R.id.fragment_container, detailsFragment, detailsFragment.getClass().getName()).addToBackStack(null).commit();
 
         }
+    }
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 }

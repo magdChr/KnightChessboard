@@ -15,7 +15,6 @@ public class SplashActivity extends AppCompatActivity {
         //android.os.Debug.waitForDebugger();
         GlobalUtils.setstatusBarColor(this, R.color.colorBrown);
         super.onCreate(savedInstanceState);
-
         startActivity(new Intent(SplashActivity.this, ChessboardActivity.class));
         finish();
     }

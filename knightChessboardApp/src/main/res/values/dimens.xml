@@ -4,4 +4,6 @@
     <dimen name="text_size">16dp</dimen>
     <dimen name="total_paths_text_size">20dp</dimen>
     <dimen name="chess_margins">30dp</dimen>
+    <dimen name="card_margin">15dp</dimen>
+    <dimen name="card_elevation">15dp</dimen>
 </resources>

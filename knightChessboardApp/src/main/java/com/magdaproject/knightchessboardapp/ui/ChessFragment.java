@@ -9,6 +9,7 @@ import com.magdaproject.knightchessboardapp.Utils.GlobalUtils;
 import com.magdaproject.knightchessboardapp.adapters.ChessSquareAdapter;
 import com.magdaproject.knightchessboardapp.databinding.FragmentChessBinding;
 import com.magdaproject.knightchessboardapp.listeners.ClickListener;
+import com.magdaproject.knightchessboardapp.listeners.PathsClickListener;
 import com.magdaproject.knightchessboardapp.listeners.SelectListener;
 import com.magdaproject.knightchessboardapp.model.Point;
 import com.magdaproject.knightchessboardapp.viewmodel.SharedViewmodel;
@@ -19,12 +20,15 @@ import java.util.HashSet;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
 
 public class ChessFragment extends Fragment {
+
+    public  static final String TAG = ChessFragment.class.getName();
 
     private FragmentChessBinding mFragmentChessBinding;
 
@@ -55,6 +59,8 @@ public class ChessFragment extends Fragment {
         mSharedViewmodel.setGlobalToolbarVisibility(true);
         mSharedViewmodel.setSquareClicked(false);
         mFragmentChessBinding.setClickListener(SetBtn_Click);
+        mFragmentChessBinding.setPathsClickListener(PathBtn_Click);
+       // mFragmentChessBinding.setResetClickListener(ResetBtn_Click);
         mSharedViewmodel.getBoardDimension().observe(this, new Observer<Integer>() {
             @Override
             public void onChanged(Integer dim) {
@@ -93,10 +99,22 @@ public class ChessFragment extends Fragment {
             mSharedViewmodel.getTotalPaths().observe(ChessFragment.this, new Observer<HashSet<ArrayList<com.magdaproject.knightchessboardapp.model.Point>>>() {
                 @Override
                 public void onChanged(HashSet<ArrayList<com.magdaproject.knightchessboardapp.model.Point>> arrayLists) {
-                    mFragmentChessBinding.totalPathsTxt.setText("There were found "+String.valueOf(arrayLists.size())+ " paths");
+                    mFragmentChessBinding.totalPathsTxt.setText("There were found "+String.valueOf(arrayLists.size())+ " paths. SHOW");
+
                 }
             });
         }
     };
+
+    public PathsClickListener PathBtn_Click = new PathsClickListener() {
+        @Override
+        public void onPathsClick() {
+         mSharedViewmodel.setShowPathFragment(ShowPathDialog.newInstance("KNIGHT PATHS"));
+        }
+    };
+
+
+
+
 
 }

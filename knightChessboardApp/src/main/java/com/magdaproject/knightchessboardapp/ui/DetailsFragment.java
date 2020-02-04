@@ -23,6 +23,8 @@ import androidx.lifecycle.ViewModelProviders;
 
 public class DetailsFragment extends Fragment {
 
+    public  static final String TAG = DetailsFragment.class.getName();
+
     public static final String BOARD_DIMENSION = "board_dimension";
 
     public static final String MAX_MOVES = "max_moves";
@@ -71,8 +73,10 @@ public class DetailsFragment extends Fragment {
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
-            mSharedViewmodel.setMaxMoves(Integer.valueOf(mFragmentDetailBinding.maxMovesPicker.getText().toString()));
-            mSharedViewmodel.setFragmentToAdd(new ChessFragment());
+           // if(Integer.valueOf(mFragmentDetailBinding.maxMovesPicker.getText().toString())!=null) {
+                mSharedViewmodel.setMaxMoves(Integer.valueOf(mFragmentDetailBinding.maxMovesPicker.getText().toString()));
+                mSharedViewmodel.setFragmentToAdd(new ChessFragment());
+        //    }
         }
 
         @Override
