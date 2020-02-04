@@ -21,6 +21,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.GridLayoutManager;
 
 public class ChessFragment extends Fragment {
 
@@ -48,11 +49,12 @@ public class ChessFragment extends Fragment {
         mSharedViewmodel = ViewModelProviders.of(getActivity()).get(SharedViewmodel.class);
         mSharedViewmodel.setGlobalToolbarVisibility(true);
         mSharedViewmodel.setSquareClicked(false);
-        final ChessSquareAdapter mChessSquareAdapter = new ChessSquareAdapter(mSelectListener);
+        final ChessSquareAdapter mChessSquareAdapter = new ChessSquareAdapter(mSelectListener, getActivity());
         mFragmentChessBinding.chessBoard.setAdapter(mChessSquareAdapter);
         mSharedViewmodel.getBoardDimension().observe(this, new Observer<Integer>() {
             @Override
             public void onChanged(Integer dim) {
+                mFragmentChessBinding.chessBoard.setLayoutManager(new GridLayoutManager(getActivity(),dim));
                 mChessSquareAdapter.setAdapterList(GlobalUtils.createColorList(dim));
             }
         });

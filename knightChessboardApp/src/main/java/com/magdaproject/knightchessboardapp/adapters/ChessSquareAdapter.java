@@ -1,5 +1,6 @@
 package com.magdaproject.knightchessboardapp.adapters;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import com.magdaproject.knightchessboardapp.listeners.SelectListener;
 import java.util.Objects;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,13 +21,16 @@ public class ChessSquareAdapter extends RecyclerView.Adapter<ChessSquareAdapter.
 
     private SelectListener mSelectListener;
 
-    private int[][] mColorList;
+    private Integer[] mColorList;
 
-    public ChessSquareAdapter(SelectListener selectListener){
+    private Context mContext;
+
+    public ChessSquareAdapter(SelectListener selectListener, Context context){
         this.mSelectListener = selectListener;
+        this.mContext = context;
     }
 
-    public void setAdapterList(int[][] colorList){
+    public void setAdapterList(Integer[] colorList){
         if (mColorList == null) {
             mColorList = colorList;
             notifyItemRangeInserted(0, mColorList.length);
@@ -49,8 +54,8 @@ public class ChessSquareAdapter extends RecyclerView.Adapter<ChessSquareAdapter.
 
                 @Override
                 public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
-                    return ChessSquareAdapter.this.mColorList[oldItemPosition] ==
-                            mColorList[newItemPosition];
+                    return ChessSquareAdapter.this.mColorList[oldItemPosition].equals(
+                            mColorList[newItemPosition]);
                 }
             });
             this.mColorList = colorList;
@@ -68,7 +73,7 @@ public class ChessSquareAdapter extends RecyclerView.Adapter<ChessSquareAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull SquareViewHolder squareViewHolder, int position) {
-      squareViewHolder.mChessSquareBinding.square.setBackgroundColor(mColorList[position][position]);
+      squareViewHolder.mChessSquareBinding.square.setBackgroundColor(mContext.getResources().getColor(mColorList[position]));
       squareViewHolder.mChessSquareBinding.executePendingBindings();
     }
 
