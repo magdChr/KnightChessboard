@@ -136,14 +136,14 @@ public class SharedViewmodel extends AndroidViewModel {
 
     public LiveData<HashSet<ArrayList<Point>>> getTotalPaths() {
         Intent intentPathService = new Intent(context, PathIntentService.class);
-        //intentPathService.putExtra(STARTING_POINT, getStartingPoint().getValue());
+        intentPathService.putExtra(STARTING_POINT, getStartingPoint().getValue());
         //intentPathService.putExtra(STARTING_POINT,getStartingPoint().getValue().getYdim());
-        // intentPathService.putExtra(ENDING_POINT, getEndingPoint().getValue());
+        intentPathService.putExtra(ENDING_POINT, getEndingPoint().getValue());
         //intentPathService.putExtra(ENDING_POINT,getEndingPoint().getValue().getYdim());
         intentPathService.putExtra(MAX_MOVES, getMaxMoves().getValue());
         intentPathService.putExtra(BOARD_DIMENSION,getBoardDimension().getValue());
-        intentPathService.putExtra(STARTING_POINT, new Point(2, 3));
-        intentPathService.putExtra(ENDING_POINT, new Point(0, 4));
+        //intentPathService.putExtra(STARTING_POINT, new Point(2, 3));
+        //intentPathService.putExtra(ENDING_POINT, new Point(0, 4));
         intentPathService.putExtra(RESULT_RECEIVER, new PathResultReceiver(new Handler(Looper.getMainLooper())));
         context.startService(intentPathService);
         return totalPaths;

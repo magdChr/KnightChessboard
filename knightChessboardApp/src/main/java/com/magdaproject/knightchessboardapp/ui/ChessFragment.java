@@ -8,6 +8,7 @@ import com.magdaproject.knightchessboardapp.R;
 import com.magdaproject.knightchessboardapp.Utils.GlobalUtils;
 import com.magdaproject.knightchessboardapp.adapters.ChessSquareAdapter;
 import com.magdaproject.knightchessboardapp.databinding.FragmentChessBinding;
+import com.magdaproject.knightchessboardapp.listeners.ClickListener;
 import com.magdaproject.knightchessboardapp.listeners.SelectListener;
 import com.magdaproject.knightchessboardapp.model.Point;
 import com.magdaproject.knightchessboardapp.viewmodel.SharedViewmodel;
@@ -29,6 +30,8 @@ public class ChessFragment extends Fragment {
 
     private SharedViewmodel mSharedViewmodel;
 
+    private ChessSquareAdapter mChessSquareAdapter;
+
     public static final int DarkChessColor = R.color.colorBrown;
 
     public static final int LightChessColor = R.color.colorGold;
@@ -40,6 +43,8 @@ public class ChessFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mFragmentChessBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_chess,container,false);
         View chessRootView = mFragmentChessBinding.getRoot();
+        mChessSquareAdapter = new ChessSquareAdapter(mSelectListener, getActivity());
+        mFragmentChessBinding.chessBoard.setAdapter(mChessSquareAdapter);
         return  chessRootView;
     }
 
@@ -49,21 +54,15 @@ public class ChessFragment extends Fragment {
         mSharedViewmodel = ViewModelProviders.of(getActivity()).get(SharedViewmodel.class);
         mSharedViewmodel.setGlobalToolbarVisibility(true);
         mSharedViewmodel.setSquareClicked(false);
-        final ChessSquareAdapter mChessSquareAdapter = new ChessSquareAdapter(mSelectListener, getActivity());
-        mFragmentChessBinding.chessBoard.setAdapter(mChessSquareAdapter);
+        mFragmentChessBinding.setClickListener(SetBtn_Click);
         mSharedViewmodel.getBoardDimension().observe(this, new Observer<Integer>() {
             @Override
             public void onChanged(Integer dim) {
                 mFragmentChessBinding.chessBoard.setLayoutManager(new GridLayoutManager(getActivity(),dim));
-                mChessSquareAdapter.setAdapterList(GlobalUtils.createColorList(dim));
+                mChessSquareAdapter.setAdapterList(GlobalUtils.createColorList(dim),dim);
             }
         });
-        mSharedViewmodel.getTotalPaths().observe(this, new Observer<HashSet<ArrayList<com.magdaproject.knightchessboardapp.model.Point>>>() {
-            @Override
-            public void onChanged(HashSet<ArrayList<com.magdaproject.knightchessboardapp.model.Point>> arrayLists) {
 
-            }
-        });
         mSharedViewmodel.getSquareClicked().observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean aBoolean) {
@@ -81,8 +80,22 @@ public class ChessFragment extends Fragment {
             }
             else {
                 mSharedViewmodel.setEndingPoint(point);
-
+                mFragmentChessBinding.setBtn.setVisibility(View.VISIBLE);
             }
+
+        }
+
+    };
+
+    public ClickListener SetBtn_Click = new ClickListener() {
+        @Override
+        public void onItemClick() {
+            mSharedViewmodel.getTotalPaths().observe(ChessFragment.this, new Observer<HashSet<ArrayList<com.magdaproject.knightchessboardapp.model.Point>>>() {
+                @Override
+                public void onChanged(HashSet<ArrayList<com.magdaproject.knightchessboardapp.model.Point>> arrayLists) {
+                    mFragmentChessBinding.totalPathsTxt.setText("There were found "+String.valueOf(arrayLists.size())+ " paths");
+                }
+            });
         }
     };
 

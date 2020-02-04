@@ -6,6 +6,7 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import com.magdaproject.knightchessboardapp.R;
+import com.magdaproject.knightchessboardapp.model.Point;
 import com.magdaproject.knightchessboardapp.ui.ChessFragment;
 
 import java.util.ArrayList;
@@ -46,5 +47,11 @@ public class GlobalUtils {
             }
         }
         return arrayBoard;
+    }
+
+    public static Point convertToPoint(int position, int dim){
+        int Xdim = position % dim;
+        int Ydim = position / dim;
+        return new Point(Xdim, Ydim);
     }
 }
